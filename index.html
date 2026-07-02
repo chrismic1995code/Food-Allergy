@@ -57,6 +57,18 @@
     padding:18px 18px 12px;
     border-bottom:1px solid var(--line);
   }
+  .version-tag{
+    position:absolute;
+    top:18px;right:18px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;font-weight:600;
+    color:var(--ink-soft);
+    letter-spacing:.04em;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:3px 7px;
+  }
   .eyebrow{
     font-family:"IBM Plex Mono",monospace;
     font-size:11px;letter-spacing:.08em;color:var(--ink-soft);
@@ -228,6 +240,7 @@
 
 <div class="app">
   <header>
+    <span class="version-tag mono" id="versionTag"></span>
     <div class="eyebrow">Allergen: Egg</div>
     <h1>ClearOrder</h1>
     <div class="sub" id="subText">Ranked 1 (easiest) &rarr; 20 (needs the most hand-holding). Tap a place for the exact order.</div>
@@ -281,6 +294,7 @@
    is a search restricted to the chain's official domain only.
    ============================================================ */
 // ===== DATA START =====
+const APP_VERSION = "3.0";
 const DATA_UPDATED = "July 2, 2026 (reconciled against official chain sources via Deep Research)";
 
 function officialSearch(domain){
@@ -353,326 +367,4 @@ const FASTFOOD = [
   { rank:10, id:"arbys", name:"Arby's", level:"modify", checked:"2026-07-02",
     allergenUrl:officialSearch("arbys.com"), verified:false,
     summary:"Roast beef on the standard bun is clean; egg hides in more places than expected.",
-    order:["Classic Roast Beef or Ham & Cheddar on the standard bun, with Arby's Sauce, Tangy BBQ, or ketchup"],
-    modify:["Skip Honey Mustard and Horsey Sauce, both contain egg per the official guide"],
-    avoid:["All breaded chicken (sandwiches, tenders), contains egg","King's Hawaiian sandwiches, that bun contains egg","Crispy Fish, Mozzarella Sticks, turnovers, mayo"] },
-
-  { rank:11, id:"culvers", name:"Culver's", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.culvers.com/menu-and-nutrition/allergen-grid", verified:true,
-    summary:"Plain ButterBurgers are egg-free; Deluxe builds and ALL custard are not.",
-    order:["ButterBurger, plain build, no mayo, no Signature Sauce","Fries"],
-    modify:["Unusual for a chain: Culver's Honey Mustard is officially egg-free, but Thousand Island and Signature Sauce contain egg","'Deluxe' builds contain egg via the sauce, order plain"],
-    avoid:["ALL frozen custard, every flavor lists egg yolk, so no cones, concretes, or shakes","Breaded/fried items (cheese curds, tenders, fish), shared fryer contacts egg"] },
-
-  { rank:12, id:"panera", name:"Panera", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.panerabread.com/content/dam/panerabread/documents/nutrition/allergen-and-nutrition-statement.pdf", verified:true,
-    summary:"Most breads and bagels are egg-free per the official guide; two traps to know.",
-    order:["Any sandwich on standard bread or a bagel, no mayo-based spread","Smoothies and most coffee drinks are egg-free by ingredient"],
-    modify:["The online customization tool does NOT recalculate allergens when you change ingredients, check the base item in the PDF instead"],
-    avoid:["Chicken Noodle Soup, contains egg and can't be modified","Caesar dressing, egg-based breakfast sandwiches, most bakery pastries"] },
-
-  { rank:13, id:"pandaexpress", name:"Panda Express", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.pandaexpress.com/nutritioninformation", verified:true,
-    summary:"Their official line: allergens could be present in ANY entree via shared woks.",
-    order:["Steamed white or brown rice are the lowest-allergen items","Non-breaded stir-fry entrees like Broccoli Beef or String Bean Chicken, verify live"],
-    modify:["Panda's own statement says shared cooking equipment means any entree could contact egg, treat this as a higher cross-contact chain"],
-    avoid:["Fried Rice (egg cooked in), Orange Chicken (egg batter), Honey Walnut Shrimp, Rangoons, cookies"] },
-
-  { rank:14, id:"chickfila", name:"Chick-fil-A", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.chick-fil-a.com/nutrition-allergens", verified:true,
-    summary:"Go grilled; verify anything breaded in their official item-by-item tool.",
-    order:["Grilled chicken sandwich or grilled nuggets","Waffle fries, cooked in a dedicated peanut-oil fryer","Fruit cup"],
-    modify:["Skip Chick-fil-A Sauce, Garden Herb Ranch, and Zesty Buffalo, all egg/mayo-based, ask for barbecue instead"],
-    avoid:["Breakfast items (Egg White Grill, muffins, scramble bowls)","Breaded chicken unless verified egg-free in their tool at your location"] },
-
-  { rank:15, id:"fiveguys", name:"Five Guys", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.fiveguys.com/nutritional-allergy-information/", verified:true,
-    summary:"Official ingredient list: the bun contains egg; fries are the bright spot.",
-    order:["Burger or hot dog as a lettuce wrap or bowl, no bun, no mayo","Fries, egg-free and cooked in dedicated peanut-oil fryers where nothing else is fried"],
-    modify:["Say 'lettuce wrap, no bun' every time, the bun officially lists eggs, milk, and sesame"],
-    avoid:["The bun","All milkshakes, the base contains egg"] },
-
-  { rank:16, id:"kfc", name:"KFC", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.kfc.com/food-allergies-and-sensitivities", verified:true,
-    summary:"Surprise from the official chart: Extra Crispy has NO egg, Original Recipe does.",
-    order:["Extra Crispy or Hot & Spicy chicken, officially wheat-only breading, no egg","Corn on the cob, green beans, mashed potatoes (no gravy), all egg-free per KFC's chart"],
-    modify:["Shared fryers still contact egg items, so discuss cross-contact with your allergist before trying fried items here","BBQ sauce and honey are egg-free, skip Ranch and KFC Sauce (egg)"],
-    avoid:["Original Recipe chicken and tenders, the breading contains dried egg whites","Kentucky Fried Nuggets, most sandwiches, cake desserts"] },
-
-  { rank:17, id:"popeyes", name:"Popeyes", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://plk-use1-prod.sites.rbictg.com/nutrition/Popeyes_US_Allergen.pdf", verified:true,
-    summary:"Now settled by the official PDF: all signature fried chicken contains egg.",
-    order:["Blackened Tenders or Blackened Chicken Sandwich (not breaded), marked 'may contain' only","BBQ and Sweet Heat sauces are egg-free"],
-    modify:["Everything marked (F) shares a fryer, factor that in per your allergist's guidance"],
-    avoid:["All Signature fried chicken, tenders, wings, popcorn shrimp, and both chicken sandwiches, officially marked as containing egg","Ranch and mayo-based sauces, biscuits, coleslaw"] },
-
-  { rank:18, id:"sonic", name:"Sonic", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://offers.sonicdrivein.com/nutrition/allergens.pdf", verified:true,
-    summary:"Downgraded: buns come from LOCAL bakeries and may contain egg, varies by store.",
-    order:["Check the bun at YOUR location first, Sonic's official guide says breads contain wheat, milk, or egg in any combination and vary by local bakery","Tots or fries by ingredient, but note the shared-fryer warning"],
-    modify:["Sonic officially warns fryer oil may contact egg because fried items aren't always in designated stations"],
-    avoid:["All breakfast (egg burritos/sandwiches)","Crispy tenders, slaw, churros","Blended/frozen desserts, flagged for egg contact"] },
-
-  { rank:19, id:"whataburger", name:"Whataburger", level:"caution", checked:"2026-07-02",
-    allergenUrl:officialSearch("whataburger.com"), verified:false,
-    summary:"Documented discrepancy between their egg icons and ingredient lists.",
-    order:["Order any burger or grilled chicken as a lettuce wrap, no bun, plus fries, the brioche bun's ingredient list includes egg even where icons disagree"],
-    modify:["Use the Whataburger app's 'No Egg' filter, their official tool, and still confirm at the counter","Ketchup, mustard, and salsas are egg-free; Balsamic Vinaigrette is the egg-free dressing"],
-    avoid:["All breakfast","Honey Mustard, Jalapeno Ranch, Thousand Island, mayo, all contain egg","Breaded WhataChick'n items"] },
-
-  { rank:20, id:"canes", name:"Raising Cane's", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.raisingcanes.com/allergens/", verified:true,
-    summary:"Egg runs through the core menu, and everything shares one fryer.",
-    order:["Fries and a drink are the most reliable order, though even fries officially 'may contain egg' from shared fry oil"],
-    modify:["'Naked' unbreaded tenders still share the fryer with breaded items, check with your allergist on that cross-contact level"],
-    avoid:["Cane's Sauce, officially contains egg (and anchovy)","Coleslaw (egg via mayo)","Chicken fingers and Texas Toast"] }
-];
-
-const SITDOWN = [
-  { rank:1, id:"longhorn", name:"LongHorn Steakhouse", level:"safe", checked:"2026-07-02",
-    allergenUrl:"https://www.longhornsteakhouse.com/nutrition", verified:true,
-    summary:"Official guide confirms grilled steaks, and even the burger bun, are egg-free.",
-    order:["Any fire-grilled steak (Flo's Filet, Ribeye, Sirloin, NY Strip, T-Bone)","LongHorn Salmon, Lemon Garlic Chicken, grilled shrimp","Baked potato, steamed broccoli","Even the burger is an option, the bun is officially made without egg"],
-    modify:["Salads: skip Honey Mustard and Thousand Island (egg) and skip croutons (egg)"],
-    avoid:["Texas Tonion and breaded/fried starters","Desserts"] },
-
-  { rank:2, id:"outback", name:"Outback Steakhouse", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.outback.com/nutrition/gluten-friendly", verified:true,
-    summary:"Grilled proteins are clean; ask for the allergy prep they officially recommend.",
-    order:["Any steak plain (ask for no seasoned butter), Chicken on the Barbie, grilled salmon","Baked potato, steamed broccoli","Salad with Light Balsamic, Mustard Vinaigrette, Oil & Balsamic, or Tangy Tomato, all officially egg-free"],
-    modify:["Outback's own guidance for allergy guests: avoid fried foods, and ask for the wood-fire grill or a separate saute pan with salt and pepper only"],
-    avoid:["Bloomin' Onion, the batter officially contains egg","Honey Mustard dressing","Cheesecake and Chocolate Thunder desserts"] },
-
-  { rank:3, id:"chilis", name:"Chili's", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.chilis.com/media/docs/chilis-allergen-vegetarian-generic", verified:true,
-    summary:"Official matrix: the brioche bun is made without egg (and without dairy).",
-    order:["A classic burger on the brioche bun, officially egg-free","Plain grilled chicken or steak builds","Chips with salsa and guacamole"],
-    modify:["Use Citrus Balsamic Vinaigrette, skip Honey Mustard, Santa Fe, ranch, and Thousand Island (all egg)","Ask that the bun not be buttered if dairy also matters"],
-    avoid:["All crispy/breaded chicken (Crispers, Big Crispy Sandwich, Santa Fe Crispers) and Boneless Wings, egg in the batter","Desserts"] },
-
-  { rank:4, id:"redlobster", name:"Red Lobster", level:"modify", checked:"2026-07-02",
-    allergenUrl:officialSearch("redlobster.com"), verified:false,
-    summary:"Grilled and steamed seafood is the clean path; skip everything breaded.",
-    order:["Plain grilled or steamed fish, steamed lobster, crab, or shrimp, no breading or butter","Baked potato","Salad with Citrus, Lemon, Mango Pineapple, French, or Balsamic vinaigrette, all egg-free per their guide"],
-    modify:["Grilled items carry an official egg cross-contact note, mention the allergy so they prep separately"],
-    avoid:["Cheddar Bay Biscuits, the free table biscuits contain egg","All fried/breaded seafood (flounder, coconut shrimp, calamari, popcorn shrimp), onion rings","Caesar, tartar, Thousand Island, Honey Mustard, all contain egg","Cheesecake"] },
-
-  { rank:5, id:"applebees", name:"Applebee's", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.applebees.com/en/nutrition/interactive-menu", verified:true,
-    summary:"Their official filter is the source of truth here; grilled entrees check out.",
-    order:["Classic burger patty (listed without egg), sirloin steaks, grilled chicken or shrimp entrees"],
-    modify:["Egg-free dressings per their tool: Fat Free Italian, Honey French, Lemon Vinaigrette, Lite Italian","Note: their Balsamic Vinaigrette DOES contain egg here, unusual, so don't assume"],
-    avoid:["Chicken Tenders and breaded items, egg in the batter","Honey Dijon, Thousand Island, Oriental dressing","Cobb Salad (whole egg), desserts"] },
-
-  { rank:6, id:"dennys", name:"Denny's", level:"modify", checked:"2026-07-02",
-    allergenUrl:officialSearch("dennys.com"), verified:false,
-    summary:"Real egg-free items exist per their official guide, but it's a breakfast diner.",
-    order:["Burger on the brioche bun (officially lists no egg), no mayo","Hash browns, baked potato, plain bacon/sausage/beef patties","French or Italian dressing, ketchup, mustard, BBQ, salsa, all egg-free"],
-    modify:["Grills are officially seasoned with fryer oil, so ask for a fresh/clean pan","Many fried sides are egg-free by ingredient but carry a 'may contain egg' fryer advisory, decide with your allergist"],
-    avoid:["All egg dishes, pancakes (buttermilk AND 9-grain), French toast, waffles","Hollandaise, tartar, mayo, Ranch, Thousand Island, Diner Q Sauce","Chicken Noodle Soup (egg), cheesecake, battered fish"] },
-
-  { rank:7, id:"bww", name:"Buffalo Wild Wings", level:"modify", checked:"2026-07-02",
-    allergenUrl:"https://www.buffalowildwings.com/nutrition/", verified:true,
-    summary:"Traditional wings are the play; more egg on this menu than you'd guess.",
-    order:["Traditional (bone-in) wings with a dry rub, generally egg-free, note they fry in beef tallow","Carrots and celery"],
-    modify:["Their guide is reissued every ~2 months with printed validity dates, check the current one","Wings are tossed in shared bowls with other items, mention the allergy"],
-    avoid:["Their burgers (All-American, Bacon, Mushroom) officially list egg, not just the bun","Mac & Cheese, officially flagged as now containing egg","Hand-Breaded Tenders, boneless wings, and breaded items","Caesar-style dressings, desserts"] },
-
-  { rank:8, id:"redrobin", name:"Red Robin", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.redrobin.com/allergen-menu", verified:true,
-    summary:"Both buns contain egg, but their allergy protocol is among the best.",
-    order:["Any burger as a lettuce wrap, no mayo-based sauce, no egg topping","Steak fries, egg-free AND cooked in a dedicated fryer"],
-    modify:["Ask for the allergen protocol, Red Robin uses a dedicated purple kit (separate tools, flagged ticket)","Egg-free dressings here: Balsamic, Dijon Vinaigrette, Italian, Oil & Vinegar, and unusually their Thousand Island"],
-    avoid:["Both the brioche bun AND the gluten-free bun contain egg","Royal Red Robin (topped with fried egg), crispy chicken, battered fish","Their tool conservatively blocks many fried items for egg, trust it"] },
-
-  { rank:9, id:"olivegarden", name:"Olive Garden", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://media.olivegarden.com/images/site/pdf/Allergen/allergen_guide.pdf", verified:true,
-    summary:"CORRECTED: many of their pastas DO contain egg, use their official egg-free list.",
-    order:["Breadsticks, officially made without egg","Herb-Grilled Salmon or grilled chicken with marinara or tomato-based sauce","Minestrone soup","Ask the server for the guide's 'pastas without egg' list before ordering any pasta"],
-    modify:["The official guide explicitly splits pastas into with-egg and without-egg, standard and filled pastas often contain egg, this is NOT a safe-by-default pasta menu","No separate fryer: anything fried can contact egg, per their own guide"],
-    avoid:["Gluten-Free Rotini, contains egg","Filled pastas (ravioli, tortellini) unless confirmed on the egg-free list","Caesar dressing, all fried appetizers, tiramisu and desserts"] },
-
-  { rank:10, id:"crackerbarrel", name:"Cracker Barrel", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.crackerbarrel.com/-/media/Project/cb-brandsite/brandsite/pdfs/AllergenGuide.pdf", verified:true,
-    summary:"Downgraded: their own guide says fried AND grilled items are off-limits for allergies.",
-    order:["Plain vegetable sides cross-checked against the egg column (turnip greens, green beans, baked sweet potato)"],
-    modify:["Cracker Barrel's official warning is blunt: fried and grilled items should NOT be consumed if you have a food allergy, grills are seasoned with fryer oil","That removes the grilled entrees we'd normally suggest, keep this one for simple sides or skip it"],
-    avoid:["All fried and grilled items per their own guidance","Pancakes, French toast, biscuits ('may contain eggs'), all cookies","Mayo-based items and Ranch"] },
-
-  { rank:11, id:"texasroadhouse", name:"Texas Roadhouse", level:"caution", checked:"2026-07-02",
-    allergenUrl:officialSearch("texasroadhouse.com"), verified:false,
-    summary:"Flagged: no official allergen chart exists, everything must be confirmed in person.",
-    order:["Speak with the manager before ordering anything, Texas Roadhouse publishes no allergen chart or tool, allergen info is handled in-restaurant only","Plain hand-cut steak (no butter) with plain baked potato is the commonly-cited safer order, but it is unverified"],
-    modify:["The famous complimentary rolls reportedly contain egg, this is widely reported but NOT officially confirmable, skip them"],
-    avoid:["Cactus Blossom, Rattlesnake Bites, and fried starters (reportedly egg, unverified)","Note: peanuts throughout the restaurant if that also matters"] },
-
-  { rank:12, id:"cheesecakefactory", name:"Cheesecake Factory", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.thecheesecakefactory.com/allergy", verified:true,
-    summary:"No downloadable chart exists, egg data is only viewable live per location.",
-    order:["Use their official online allergen tool with YOUR location selected and filter out eggs, that live result is the only official answer","Steaks and plain fish are the usual starting point, verify live"],
-    modify:["Their own disclaimer says supplier labels may not be accurate, and they suggest contacting Guest Services in advance for allergies, worth doing for a 250+ item menu"],
-    avoid:["All cheesecakes and desserts, egg is core to the recipe","Breaded items (Avocado Eggrolls, Korean Fried Cauliflower), brunch/omelette items"] },
-
-  { rank:13, id:"ihop", name:"IHOP", level:"caution", checked:"2026-07-02",
-    allergenUrl:"https://www.ihop.com/en/nutrition", verified:true,
-    summary:"The hardest one here, the menu is built around eggs and pancake batter.",
-    order:["T-Bone Steak (no eggs) or grilled Atlantic Salmon","Hash browns, seasonal fresh fruit, potato and breakfast-meat sides"],
-    modify:["Say 'no eggs' explicitly and specifically, and confirm no pancake batter touches the order","Their official filter tool is the source of truth, check items live"],
-    avoid:["Anything egg-based including egg-white omelets, egg whites are still egg","All pancakes, waffles, crepes, French toast, and the Big Breakfast Burrito","Baked goods and desserts"] }
-];
-// ===== DATA END =====
-
-const LABELS = {safe:"SAFE", modify:"MODIFY", caution:"CAUTION"};
-
-let currentTab = "fast";
-let userCoords = null;
-let currentChainId = null;
-
-const listEl = document.getElementById("chainList");
-const emptyEl = document.getElementById("emptyState");
-const listView = document.getElementById("listView");
-const detailView = document.getElementById("detailView");
-const searchInput = document.getElementById("searchInput");
-const locBtn = document.getElementById("locBtn");
-const locStatus = document.getElementById("locStatus");
-const tabFast = document.getElementById("tabFast");
-const tabSit = document.getElementById("tabSit");
-const subText = document.getElementById("subText");
-
-document.getElementById("dataDate").textContent = "Data last verified: " + DATA_UPDATED;
-
-function activeData(){
-  return currentTab === "fast" ? FASTFOOD : SITDOWN;
-}
-
-function mapsLink(name){
-  const q = userCoords
-    ? name + " near " + userCoords.lat.toFixed(4) + "," + userCoords.lng.toFixed(4)
-    : name + " near me";
-  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
-}
-
-tabFast.addEventListener("click", function(){
-  currentTab = "fast";
-  tabFast.classList.add("active");
-  tabSit.classList.remove("active");
-  subText.textContent = "Ranked 1 (easiest) \u2192 20 (needs the most hand-holding). Tap a place for the exact order.";
-  searchInput.value = "";
-  showList();
-  renderList();
-});
-
-tabSit.addEventListener("click", function(){
-  currentTab = "sit";
-  tabSit.classList.add("active");
-  tabFast.classList.remove("active");
-  subText.textContent = "Ranked 1 (easiest) \u2192 13 (needs the most hand-holding). Tap a place for the exact order.";
-  searchInput.value = "";
-  showList();
-  renderList();
-});
-
-locBtn.addEventListener("click", function(){
-  if(!navigator.geolocation){
-    locStatus.textContent = "Location isn't available in this browser.";
-    locStatus.style.display = "block";
-    return;
-  }
-  locBtn.textContent = "Locating...";
-  navigator.geolocation.getCurrentPosition(
-    function(pos){
-      userCoords = {lat: pos.coords.latitude, lng: pos.coords.longitude};
-      locBtn.textContent = "Location set, nearest-branch links are ready";
-      locBtn.disabled = true;
-      locStatus.style.display = "none";
-      if(detailView.classList.contains("active") && currentChainId){
-        showDetail(currentChainId);
-      }
-    },
-    function(err){
-      locBtn.textContent = "Use my location for nearest-branch links";
-      locStatus.textContent = "Location wasn't granted, links will open a general search instead.";
-      locStatus.style.display = "block";
-    },
-    {timeout:8000}
-  );
-});
-
-function renderList(filter){
-  filter = filter || "";
-  const q = filter.trim().toLowerCase();
-  const data = activeData();
-  const filtered = data.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; });
-  listEl.innerHTML = "";
-  emptyEl.style.display = filtered.length ? "none" : "block";
-
-  filtered.forEach(function(chain){
-    const card = document.createElement("button");
-    card.className = "chain-card";
-    card.innerHTML =
-      '<div class="chain-left">' +
-        '<span class="rank mono">' + String(chain.rank).padStart(2,"0") + '</span>' +
-        '<div>' +
-          '<div class="chain-name">' + chain.name + '</div>' +
-          '<div class="chain-summary">' + chain.summary + '</div>' +
-        '</div>' +
-      '</div>' +
-      '<span class="badge ' + chain.level + '">' + LABELS[chain.level] + '</span>';
-    card.addEventListener("click", function(){ showDetail(chain.id); });
-    listEl.appendChild(card);
-  });
-}
-
-function buildSection(title, items, cls){
-  if(!items || !items.length) return "";
-  const tagWord = cls === "order" ? "order" : cls === "modify" ? "modify" : "avoid";
-  let html = '<div class="section ' + cls + '"><div class="section-label">' + title + '</div>';
-  items.forEach(function(i){
-    html += '<div class="tag-item"><span class="tag">' + tagWord + '</span><span>' + i + '</span></div>';
-  });
-  html += '</div>';
-  return html;
-}
-
-function showDetail(id){
-  const data = activeData();
-  const chain = data.find(function(c){ return c.id === id; });
-  if(!chain) return;
-  currentChainId = id;
-
-  const officialLabel = chain.verified
-    ? "Official allergen info &rarr;"
-    : "Official allergen info (via search) &rarr;";
-
-  detailView.innerHTML =
-    '<button class="back">&larr; All ' + (currentTab === "fast" ? "restaurants" : "sit-down spots") + '</button>' +
-    '<div class="detail-head">' +
-      '<div class="rank mono">Rank ' + chain.rank + ' of ' + data.length + '</div>' +
-      '<h2>' + chain.name + '</h2>' +
-      '<span class="badge ' + chain.level + '">' + LABELS[chain.level] + '</span>' +
-      '<div class="verified-line">Last verified: ' + chain.checked + '</div>' +
-    '</div>' +
-    '<div class="link-row">' +
-      '<a class="official-link" href="' + chain.allergenUrl + '" target="_blank" rel="noopener">' + officialLabel + '</a>' +
-      '<a class="maps-link" href="' + mapsLink(chain.name) + '" target="_blank" rel="noopener">Find nearest ' + chain.name + ' &rarr;</a>' +
-    '</div>' +
-    buildSection("Order this", chain.order, "order") +
-    buildSection("Say this / modify", chain.modify, "modify") +
-    buildSection("Skip this", chain.avoid, "avoid");
-
-  detailView.querySelector(".back").addEventListener("click", showList);
-  listView.classList.add("hidden");
-  detailView.classList.add("active");
-  window.scrollTo(0,0);
-}
-
-function showList(){
-  detailView.classList.remove("active");
-  listView.classList.remove("hidden");
-}
-
-searchInput.addEventListener("input", function(e){ renderList(e.target.value); });
-renderList();
-</script>
-</body>
-</html>
+    order:["Classic Roast Beef or Ham & Chedd
