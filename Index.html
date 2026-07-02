@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<title>ClearOrder — egg-safe quick reference</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ClearOrder">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #FAF8F3;
+    --ink: #1C2B2E;
+    --ink-soft: #5B6B6C;
+    --line: #E1DACB;
+    --card: #FFFFFF;
+
+    --safe: #2E7D63;
+    --safe-bg: #E5F1E9;
+    --modify: #B5651D;
+    --modify-bg: #F7E9D8;
+    --caution: #A23B3B;
+    --caution-bg: #F6E4E2;
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--bg);}
+  html,body{margin:0;padding:0;min-height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;margin:0;}
+  .mono{font-family:"IBM Plex Mono",monospace;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  button:focus-visible, input:focus-visible, a:focus-visible{
+    outline:3px solid #1C2B2E;
+    outline-offset:2px;
+  }
+
+  .app{max-width:640px;margin:0 auto;padding-bottom:60px;}
+
+  header{
+    position:sticky;top:0;z-index:10;
+    background:var(--bg);
+    padding:18px 18px 12px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;letter-spacing:.08em;color:var(--ink-soft);
+    text-transform:uppercase;margin-bottom:4px;
+  }
+  h1{font-size:26px;font-weight:700;letter-spacing:-0.01em;}
+  .sub{color:var(--ink-soft);font-size:13.5px;margin-top:4px;line-height:1.4;}
+
+  .tabs{display:flex;gap:8px;margin-top:14px;}
+  .tab{
+    flex:1;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 8px;
+    font-size:13px;font-weight:600;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+
+  .search{
+    margin-top:10px;
+    display:flex;align-items:center;gap:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+  }
+  .search input{
+    border:none;outline:none;background:transparent;
+    font-size:16px;flex:1;color:var(--ink);
+  }
+  .search input::placeholder{color:var(--ink-soft);}
+
+  .loc-row{margin-top:10px;}
+  .loc-btn{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:13.5px;
+    color:var(--ink);
+    text-align:left;
+  }
+  .loc-btn:disabled{color:var(--safe);border-color:var(--safe-bg);background:var(--safe-bg);}
+  .loc-status{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+
+  .disclaimer{
+    margin:14px 18px 0;
+    padding:10px 12px;
+    border:1px dashed var(--line);
+    border-radius:8px;
+    font-size:12.5px;line-height:1.45;color:var(--ink-soft);
+  }
+
+  main{padding:16px 18px;}
+  .list{display:flex;flex-direction:column;gap:10px;}
+
+  .chain-card{
+    text-align:left;width:100%;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 14px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .chain-card:hover{border-color:#c7bfa6;}
+  .chain-left{display:flex;gap:12px;align-items:flex-start;}
+  .rank{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--ink-soft);border:1px solid var(--line);border-radius:6px;
+    padding:2px 6px;flex-shrink:0;margin-top:2px;
+  }
+  .chain-name{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:17px;}
+  .chain-summary{color:var(--ink-soft);font-size:13px;margin-top:3px;}
+
+  .badge{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+    letter-spacing:.06em;padding:5px 9px;border-radius:6px;
+    white-space:nowrap;flex-shrink:0;
+  }
+  .badge.safe{color:var(--safe);background:var(--safe-bg);}
+  .badge.modify{color:var(--modify);background:var(--modify-bg);}
+  .badge.caution{color:var(--caution);background:var(--caution-bg);}
+
+  .detail{display:none;}
+  .detail.active{display:block;}
+  .list-view.hidden{display:none;}
+
+  .back{
+    display:inline-flex;align-items:center;gap:6px;
+    background:none;border:none;color:var(--ink-soft);
+    font-size:14px;padding:0;margin-bottom:14px;
+  }
+  .back:hover{color:var(--ink);}
+
+  .detail-head{margin-bottom:16px;}
+  .detail-head .badge{margin-top:8px;display:inline-block;}
+  .detail-head .rank{margin-bottom:6px;display:inline-block;}
+
+  .maps-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13.5px;font-weight:600;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 12px;
+    margin-bottom:18px;
+    text-decoration:none;
+  }
+  .maps-link:hover{border-color:#c7bfa6;}
+
+  .section{margin-bottom:18px;}
+  .section-label{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;
+  }
+  .section.order .section-label{color:var(--safe);}
+  .section.modify .section-label{color:var(--modify);}
+  .section.avoid .section-label{color:var(--caution);}
+
+  .tag-item{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:14.5px;line-height:1.45;
+  }
+  .tag-item:last-child{border-bottom:none;}
+  .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;
+    letter-spacing:.05em;padding:3px 6px;border-radius:5px;
+    flex-shrink:0;margin-top:1px;
+  }
+  .section.order .tag{color:var(--safe);background:var(--safe-bg);}
+  .section.modify .tag{color:var(--modify);background:var(--modify-bg);}
+  .section.avoid .tag{color:var(--caution);background:var(--caution-bg);}
+
+  footer{padding:20px 18px 40px;border-top:1px solid var(--line);margin-top:10px;}
+  details summary{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+  details p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  details ol{font-size:13.5px;color:var(--ink-soft);line-height:1.6;padding-left:20px;}
+
+  .empty{color:var(--ink-soft);font-size:14px;padding:30px 4px;text-align:center;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .chain-card, .back, .maps-link{transition:border-color .15s ease, color .15s ease;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="eyebrow">Allergen: Egg</div>
+    <h1>ClearOrder</h1>
+    <div class="sub" id="subText">Ranked 1 (easiest) &rarr; 20 (needs the most hand-holding). Tap a place for the exact order.</div>
+    <div class="tabs">
+      <button class="tab active" id="tabFast">Fast Food (20)</button>
+      <button class="tab" id="tabSit">Sit-Down (13)</button>
+    </div>
+    <div class="search">
+      <span class="mono" style="color:var(--ink-soft);font-size:14px;">&#8981;</span>
+      <input id="searchInput" type="text" placeholder="Search…" autocomplete="off">
+    </div>
+    <div class="loc-row">
+      <button class="loc-btn" id="locBtn">Use my location for nearest-branch links</button>
+      <div class="loc-status" id="locStatus" style="display:none;"></div>
+    </div>
+  </header>
+
+  <div class="disclaimer">
+    Reflects each chain's published U.S. allergen info as of mid-2026. Recipes and sauces change &mdash; confirm at the register or with your server every time, especially for cross-contact. Not a substitute for your allergist's guidance. Location is only used to build a Maps link &mdash; it isn't stored or sent anywhere.
+  </div>
+
+  <main>
+    <div class="list-view" id="listView">
+      <div class="list" id="chainList"></div>
+      <div class="empty" id="emptyState" style="display:none;">No match. Try another name.</div>
+    </div>
+    <div class="detail" id="detailView"></div>
+  </main>
+
+  <footer>
+    <details>
+      <summary>Add this to his Home Screen (iPhone)</summary>
+      <ol>
+        <li>Open this page in Safari (not Chrome &mdash; Add to Home Screen only works from Safari on iOS).</li>
+        <li>Tap the Share icon (square with an arrow) in the toolbar.</li>
+        <li>Scroll down and tap "Add to Home Screen."</li>
+        <li>Name it "ClearOrder" and tap Add.</li>
+      </ol>
+      <p>Deploy this file to Firebase Hosting, Vercel, or Netlify first (all free, all give you HTTPS automatically) so the location feature works and everyone in the family can install it from the same URL.</p>
+    </details>
+  </footer>
+</div>
+
+<script>
+const FASTFOOD = [
+  { rank:1, id:"chipotle", name:"Chipotle", level:"safe",
+    summary:"No egg anywhere on the standard menu.",
+    order:["Any bowl, burrito, taco, or salad, build it however he likes","Guac and queso are both egg-free too"],
+    modify:[], avoid:["Breakfast items, at the small number of locations that serve it"] },
+
+  { rank:2, id:"tacobell", name:"Taco Bell", level:"safe",
+    summary:"Core menu is egg-free; egg only shows up at breakfast and in a few sauces.",
+    order:["Any taco, burrito, quesadilla, or nachos from the regular menu"],
+    modify:["Skip Creamy Chipotle, Ranch, and Honey Mustard sauces, all egg-based"],
+    avoid:["Every breakfast item, burritos, crunchwraps, and quesadillas all use scrambled egg"] },
+
+  { rank:3, id:"wendys", name:"Wendy's", level:"safe",
+    summary:"Burgers, chili, and Frosty are all clean.",
+    order:["Any burger, patties and buns are egg-free","The chili","A Frosty (chocolate or vanilla)"],
+    modify:["Ask for packet ketchup instead of the squeeze bottle, Wendy's flags it for cross-contact with mayo at the sandwich station"],
+    avoid:["All breakfast, biscuits, croissants, and burritos all contain egg"] },
+
+  { rank:4, id:"dominos", name:"Domino's", level:"safe",
+    summary:"Standard pizza dough has no egg.",
+    order:["Classic hand-tossed or thin-crust, cheese or pepperoni"],
+    modify:["Double-check specialty crusts and dips in the app's allergen filter, they vary by item"],
+    avoid:["Chocolate Lava Crunch Cakes, cookies, cinnamon twists, egg in the batter"] },
+
+  { rank:5, id:"innout", name:"In-N-Out", level:"modify",
+    summary:"One swap and the rest of the menu is clean.",
+    order:["Cheeseburger or Double-Double with ketchup and mustard instead of Spread","Fries"],
+    modify:["Always say 'no spread', the Spread is a Thousand-Island-style sauce made with whole eggs"],
+    avoid:[] },
+
+  { rank:6, id:"arbys", name:"Arby's", level:"modify",
+    summary:"The meat and bread are clean, egg lives in a few specific sauces.",
+    order:["Classic Roast Beef, Beef 'n Cheddar, or curly fries with Arby's Sauce or ketchup"],
+    modify:["Skip Honey Mustard, Horsey Sauce, and Dijon Honey Mustard, all contain egg"],
+    avoid:["Breakfast items, Peach Cobbler Roll, turnovers"] },
+
+  { rank:7, id:"mcdonalds", name:"McDonald's", level:"modify",
+    summary:"Plain burgers are safe; chicken sandwiches need one change.",
+    order:["Hamburger, Cheeseburger, Quarter Pounder, as-is","Fries, apple slices"],
+    modify:["McChicken and McCrispy come with mayo by default, order it 'no mayo'"],
+    avoid:["All breakfast, Egg McMuffin, McGriddles, anything with folded egg"] },
+
+  { rank:8, id:"sonic", name:"Sonic", level:"modify",
+    summary:"Burgers, dogs, and tots are egg-free; a few fried and frozen items aren't.",
+    order:["Any burger or hot dog, plus tots or fries"],
+    modify:["Ask about the sauce before adding one, a few Sonic sauces contain egg"],
+    avoid:["Crispy Tenders (breaded), Slaw, Churros, all contain egg"] },
+
+  { rank:9, id:"burgerking", name:"Burger King", level:"modify",
+    summary:"Nuggets and Chicken Fries are egg-free; the chicken sandwiches are not.",
+    order:["Chicken Nuggets or Chicken Fries, plus fries, both egg-free by ingredient","Any burger, no mayo"],
+    modify:["Order burgers 'no mayo', that's where the egg is"],
+    avoid:["Original Chicken Sandwich, Spicy Crispy Chicken Sandwich, Big Fish Sandwich, the fillet itself contains egg, not just the mayo","All breakfast"] },
+
+  { rank:10, id:"subway", name:"Subway", level:"modify",
+    summary:"Bread is egg-free; pick the sauce carefully.",
+    order:["Any sandwich, any standard bread"],
+    modify:["Use mustard, oil and vinegar, or Sweet Onion sauce instead of Mayo, Ranch, Honey Mustard, or Chipotle Southwest"],
+    avoid:["Egg Patty, Egg Salad, Caesar-style dressing"] },
+
+  { rank:11, id:"jimmyjohns", name:"Jimmy John's", level:"modify",
+    summary:"The bread is fine, mayo is the thing to drop.",
+    order:["Any sandwich on French bread or sliced wheat, hold the mayo"],
+    modify:["Swap Hellmann's mayo for yellow mustard, oil and vinegar, or avocado spread"],
+    avoid:["Totally Tuna (mayo-based), Chocolate Chip Cookie, Fudge Brownie"] },
+
+  { rank:12, id:"culvers", name:"Culver's", level:"modify",
+    summary:"The ButterBurger itself is egg-free, the fried and frozen stuff isn't.",
+    order:["ButterBurger, no mayo (ask for no butter too if he's watching dairy)","Fries"],
+    modify:["Skip mayo and Thousand Island dressing, both contain egg"],
+    avoid:["Frozen custard, concrete mixers, and cones, all contain egg","Breaded/fried items (cheese curds, chicken tenders, fish), egg in the breading, shared fryer"] },
+
+  { rank:13, id:"panera", name:"Panera", level:"modify",
+    summary:"Pick the right bread and skip two specific items.",
+    order:["Any sandwich on Whole Grain or Tomato Basil bread, or most bagels","A broth-based soup (not chicken noodle) or a salad without a creamy dressing"],
+    modify:["Ask about the specific bread and dressing at your location, formulations vary and Panera's own guide flags this"],
+    avoid:["Chicken Noodle Soup (contains egg, can't be modified)","Bakery case items, cookies, pastries, and most baked goods contain egg"] },
+
+  { rank:14, id:"pandaexpress", name:"Panda Express", level:"modify",
+    summary:"Pick the right entree, egg shows up in some very popular ones.",
+    order:["Broccoli Beef, Black Pepper Chicken, or String Bean Chicken Breast, over steamed rice"],
+    modify:["Ask which wok items were prepped fresh, everything shares woks and a fryer"],
+    avoid:["Fried Rice, Orange Chicken, Honey Walnut Shrimp, Cream Cheese Rangoons, Fortune Cookies, Chocolate Chip Cookie, all contain egg"] },
+
+  { rank:15, id:"chickfila", name:"Chick-fil-A", level:"caution",
+    summary:"The signature fried chicken breading uses egg, go grilled instead.",
+    order:["Grilled chicken sandwich or grilled nuggets, waffle fries, fruit cup"],
+    modify:["Skip Chick-fil-A Sauce and most creamy dressings, ask for barbecue or plain instead"],
+    avoid:["Original fried chicken sandwich or nuggets, egg-and-milk wash in the breading","All breakfast items"] },
+
+  { rank:16, id:"popeyes", name:"Popeyes", level:"caution",
+    summary:"Sources disagree on the fried batter, but a grilled option sidesteps the question.",
+    order:["Blackened Chicken Sandwich or Blackened Tenders (grilled, not breaded), plus Cajun Fries"],
+    modify:["The standard fried batter is reported both ways (with and without egg) depending on the source, the Blackened option avoids the guesswork entirely"],
+    avoid:["Standard fried chicken, tenders, wings, and seafood, breading contains egg","Buttermilk Ranch Dip"] },
+
+  { rank:17, id:"fiveguys", name:"Five Guys", level:"caution",
+    summary:"Unusual for a burger chain, the bun itself has egg.",
+    order:["Burger or hot dog as a lettuce wrap or 'burger bowl' (no bun), plus fries"],
+    modify:["Say 'lettuce wrap, no bun' every time, the standard bun contains egg, milk, and soy"],
+    avoid:["Standard bun, milkshakes (egg in the ice cream base)"] },
+
+  { rank:18, id:"whataburger", name:"Whataburger", level:"caution",
+    summary:"Bun ingredients are inconsistently labeled, worth confirming in person.",
+    order:["Ask specifically whether today's standard bun contains egg before ordering, Whataburger's own allergen sources disagree with each other on this","If in doubt, order any burger or grilled chicken 'on lettuce, no bun' plus fries"],
+    modify:["Several specialty buns and sandwiches (Breakfast Burger, Bacon Steakhouse Double) are explicitly listed as containing egg"],
+    avoid:["All breakfast, eggs are central to most items"] },
+
+  { rank:19, id:"kfc", name:"KFC", level:"caution",
+    summary:"No grilled alternative here, the breading itself contains egg.",
+    order:["Corn on the cob, if available, plus a drink is the most reliable order"],
+    modify:["Ask specifically about mashed potatoes and biscuits, they aren't clearly documented for egg either way, so don't assume"],
+    avoid:["All fried chicken, Original Recipe, Extra Crispy, tenders, and nuggets all use an egg-containing breading or batter","Coleslaw (mayo-based)"] },
+
+  { rank:20, id:"canes", name:"Raising Cane's", level:"caution",
+    summary:"Egg runs through most of the menu here, the hardest chain on this list.",
+    order:["Fries and a drink are the most reliable order"],
+    modify:["'Naked' unbreaded tenders exist but still fry in the same oil as the standard egg-and-milk breaded fingers, check with your allergist on whether that cross-contact level is okay to try"],
+    avoid:["Chicken fingers, Cane's Sauce, coleslaw, honey mustard"] }
+];
+
+const SITDOWN = [
+  { rank:1, id:"longhorn", name:"LongHorn Steakhouse", level:"safe",
+    summary:"Steak, potato, veggies, and most dressings are naturally egg-free.",
+    order:["Any steak, plain or with simple seasoning","Grilled chicken or salmon, plain","Baked potato, steamed veggies, side salad with vinaigrette"],
+    modify:["Skip Honey Mustard and Thousand Island dressings, both contain egg"],
+    avoid:["Desserts, most contain egg"] },
+
+  { rank:2, id:"outback", name:"Outback Steakhouse", level:"modify",
+    summary:"Steak and grilled proteins are clean; the signature appetizer isn't.",
+    order:["Any steak, grilled chicken on the Barbie, or grilled salmon, plain","Baked potato, steamed veggies, salad with vinaigrette"],
+    modify:["Skip Honey Mustard dressing, contains egg"],
+    avoid:["Bloomin' Onion, the batter contains egg, not just dairy","Desserts"] },
+
+  { rank:3, id:"texasroadhouse", name:"Texas Roadhouse", level:"modify",
+    summary:"The steak is clean; skip the famous rolls.",
+    order:["Any hand-cut steak, grilled chicken, or grilled salmon, plain","Baked potato, steamed vegetables, house salad with oil & vinegar"],
+    modify:["Skip the fresh-baked rolls, the dough itself contains egg","Skip Thousand Island and Caesar dressing"],
+    avoid:["Fried starters, Rattlesnake Bites, Cactus Blossom, Fried Pickles, Chicken Critters, egg in the breading","Desserts"] },
+
+  { rank:4, id:"redlobster", name:"Red Lobster", level:"modify",
+    summary:"Steak and steamed/grilled seafood are clean; the free biscuits aren't.",
+    order:["Sirloin Steak, or grilled/broiled fish (salmon, mahi, trout), plain","Steamed lobster, crab, or shrimp without butter","Baked potato, garden salad with vinaigrette"],
+    modify:["Skip Honey Mustard and Thousand Island dressings, both contain egg"],
+    avoid:["Cheddar Bay Biscuits, the free ones, they contain egg along with wheat and dairy","Fried shrimp and fish, egg in the breading","Caesar dressing"] },
+
+  { rank:5, id:"bww", name:"Buffalo Wild Wings", level:"modify",
+    summary:"The wings themselves are egg-free; the burger bun isn't.",
+    order:["Bone-in or boneless wings, dry rub or a confirmed egg-free sauce, plus fries or tots"],
+    modify:["Order any burger or chicken sandwich as a lettuce wrap, the Challah bun contains egg"],
+    avoid:["Caesar-style dressing, the Mac & Cheese, both flagged for egg"] },
+
+  { rank:6, id:"chilis", name:"Chili's", level:"modify",
+    summary:"The burger bun is egg-free; several sauces and 'Santa Fe' items aren't.",
+    order:["A classic burger on the brioche bun with Secret Sauce or Garlic Aioli","Bone-in wings, plain"],
+    modify:["Skip Boneless Wings and any 'Santa Fe' item, flagged for egg","Use Citrus Balsamic Vinaigrette, not Honey Mustard, Santa Fe, or Thousand Island (all egg)"],
+    avoid:["Desserts"] },
+
+  { rank:7, id:"applebees", name:"Applebee's", level:"modify",
+    summary:"Most entrees are egg-free by default; the dressing choice matters.",
+    order:["Grilled chicken, steak, or shrimp entrees","Wings plain with a dairy-free wing sauce"],
+    modify:["Use Honey French, Lemon Vinaigrette, or Lite Italian, skip Balsamic Vinaigrette, Honey Dijon, and Thousand Island (all egg)"],
+    avoid:["Cobb Salad, has hard-boiled egg as a listed ingredient","Desserts"] },
+
+  { rank:8, id:"olivegarden", name:"Olive Garden", level:"modify",
+    summary:"Regular pasta is clean; ironically, the 'gluten-free' one isn't.",
+    order:["Regular pasta (spaghetti, angel hair, fettuccine, rigatoni) with marinara or meat sauce","Herb-Grilled Salmon or grilled chicken","Breadsticks, minestrone soup"],
+    modify:["Skip the Gluten-Free Rotini if egg is the concern, it contains egg even though the regular pastas don't"],
+    avoid:["Caesar dressing, fried appetizers (Fried Mozzarella, Lasagna Fritta, Toasted Ravioli, Calamari)","Tiramisu and most desserts"] },
+
+  { rank:9, id:"crackerbarrel", name:"Cracker Barrel", level:"modify",
+    summary:"Grilled entrees and veggie sides are the reliable path.",
+    order:["Grilled entrees, Grilled Chicken Tenderloins, Lemon Pepper Grilled Trout, catfish","Turnip greens, green beans, baked sweet potato, regular hashbrowns (not the casserole)"],
+    modify:["Ask specifically about pancakes, French toast, and biscuits, batter ingredients aren't clearly documented for egg and breakfast batters usually contain it"],
+    avoid:["Fried and breaded items (Country Fried Steak, Fried Chicken)","Desserts, pies and cobblers"] },
+
+  { rank:10, id:"dennys", name:"Denny's", level:"modify",
+    summary:"Real egg-free items exist, but this is a breakfast-first diner, so stay alert.",
+    order:["Burger, no mayo, or a grilled chicken/steak entree","Hash browns, baked potato, vegetable sides, fries, all confirmed egg-free"],
+    modify:["Ask for a fresh pan, one of Denny's grills cooks eggs and wheat items together","Skip mayo, Honey Mustard, Thousand Island, and Diner Q Sauce, all contain egg"],
+    avoid:["Anything with eggs by definition, omelets, Slams, scrambled eggs, pancakes, waffles, French toast","Country Fried Steak, apple pie, lemon meringue pie"] },
+
+  { rank:11, id:"redrobin", name:"Red Robin", level:"caution",
+    summary:"Unusual catch: both bun options here contain egg.",
+    order:["Any burger or chicken as a lettuce wrap ('Wedgie style,' no bun), plus steak fries"],
+    modify:["Both the regular brioche bun AND the gluten-free bun at Red Robin contain egg, the lettuce wrap is the only bun-free path"],
+    avoid:["Bleu cheese dressing and Buzz Sauce, both contain egg yolks", "Pretzel bun, croissant"] },
+
+  { rank:12, id:"cheesecakefactory", name:"Cheesecake Factory", level:"caution",
+    summary:"Huge menu, and egg turns up in unexpected, popular places.",
+    order:["Steaks or fresh fish, plain or lightly seasoned","Vegan Cobb Salad, confirmed egg-free and dairy-free"],
+    modify:["Use their in-app interactive allergen filter for anything else, this menu has 250+ items"],
+    avoid:["Cheesecakes and most desserts, egg is core to the recipe","Avocado Eggrolls, Korean Fried Cauliflower, Grilled Chicken & Avocado Club (mayo)"] },
+
+  { rank:13, id:"ihop", name:"IHOP", level:"caution",
+    summary:"The hardest one here, this menu is built around eggs and pancake batter.",
+    order:["T-Bone Steak (no eggs) or grilled Atlantic Salmon","Hash browns, seasonal fresh fruit"],
+    modify:["Confirm no pancake batter is mixed into your order, some locations blend it into eggs and omelets for texture, so 'no eggs' needs to be explicit and specific"],
+    avoid:["Anything egg-based, including the egg white omelet, egg whites are still egg","Pancakes, waffles, French toast, all breakfast combos","Big Brunch Burger, comes with a fried egg by default"] }
+];
+
+const LABELS = {safe:"SAFE", modify:"MODIFY", caution:"CAUTION"};
+
+let currentTab = "fast";
+let userCoords = null;
+let currentChainId = null;
+
+const listEl = document.getElementById("chainList");
+const emptyEl = document.getElementById("emptyState");
+const listView = document.getElementById("listView");
+const detailView = document.getElementById("detailView");
+const searchInput = document.getElementById("searchInput");
+const locBtn = document.getElementById("locBtn");
+const locStatus = document.getElementById("locStatus");
+const tabFast = document.getElementById("tabFast");
+const tabSit = document.getElementById("tabSit");
+const subText = document.getElementById("subText");
+
+function activeData(){
+  return currentTab === "fast" ? FASTFOOD : SITDOWN;
+}
+
+function mapsLink(name){
+  const q = userCoords
+    ? name + " near " + userCoords.lat.toFixed(4) + "," + userCoords.lng.toFixed(4)
+    : name + " near me";
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+}
+
+tabFast.addEventListener("click", function(){
+  currentTab = "fast";
+  tabFast.classList.add("active");
+  tabSit.classList.remove("active");
+  subText.textContent = "Ranked 1 (easiest) \u2192 20 (needs the most hand-holding). Tap a place for the exact order.";
+  searchInput.value = "";
+  showList();
+  renderList();
+});
+
+tabSit.addEventListener("click", function(){
+  currentTab = "sit";
+  tabSit.classList.add("active");
+  tabFast.classList.remove("active");
+  subText.textContent = "Ranked 1 (easiest) \u2192 13 (needs the most hand-holding). Tap a place for the exact order.";
+  searchInput.value = "";
+  showList();
+  renderList();
+});
+
+locBtn.addEventListener("click", function(){
+  if(!navigator.geolocation){
+    locStatus.textContent = "Location isn't available in this browser.";
+    locStatus.style.display = "block";
+    return;
+  }
+  locBtn.textContent = "Locating...";
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      userCoords = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+      locBtn.textContent = "Location set, nearest-branch links are ready";
+      locBtn.disabled = true;
+      locStatus.style.display = "none";
+      if(detailView.classList.contains("active") && currentChainId){
+        showDetail(currentChainId);
+      }
+    },
+    function(err){
+      locBtn.textContent = "Use my location for nearest-branch links";
+      locStatus.textContent = "Location wasn't granted, links will open a general search instead.";
+      locStatus.style.display = "block";
+    },
+    {timeout:8000}
+  );
+});
+
+function renderList(filter){
+  filter = filter || "";
+  const q = filter.trim().toLowerCase();
+  const data = activeData();
+  const filtered = data.filter(function(c){ return c.name.toLowerCase().indexOf(q) !== -1; });
+  listEl.innerHTML = "";
+  emptyEl.style.display = filtered.length ? "none" : "block";
+
+  filtered.forEach(function(chain){
+    const card = document.createElement("button");
+    card.className = "chain-card";
+    card.innerHTML =
+      '<div class="chain-left">' +
+        '<span class="rank mono">' + String(chain.rank).padStart(2,"0") + '</span>' +
+        '<div>' +
+          '<div class="chain-name">' + chain.name + '</div>' +
+          '<div class="chain-summary">' + chain.summary + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<span class="badge ' + chain.level + '">' + LABELS[chain.level] + '</span>';
+    card.addEventListener("click", function(){ showDetail(chain.id); });
+    listEl.appendChild(card);
+  });
+}
+
+function buildSection(title, items, cls){
+  if(!items || !items.length) return "";
+  const tagWord = cls === "order" ? "order" : cls === "modify" ? "modify" : "avoid";
+  let html = '<div class="section ' + cls + '"><div class="section-label">' + title + '</div>';
+  items.forEach(function(i){
+    html += '<div class="tag-item"><span class="tag">' + tagWord + '</span><span>' + i + '</span></div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function showDetail(id){
+  const data = activeData();
+  const chain = data.find(function(c){ return c.id === id; });
+  if(!chain) return;
+  currentChainId = id;
+
+  detailView.innerHTML =
+    '<button class="back">&larr; All ' + (currentTab === "fast" ? "restaurants" : "sit-down spots") + '</button>' +
+    '<div class="detail-head">' +
+      '<div class="rank mono">Rank ' + chain.rank + ' of ' + data.length + '</div>' +
+      '<h2>' + chain.name + '</h2>' +
+      '<span class="badge ' + chain.level + '">' + LABELS[chain.level] + '</span>' +
+    '</div>' +
+    '<a class="maps-link" href="' + mapsLink(chain.name) + '" target="_blank" rel="noopener">Find nearest ' + chain.name + ' &rarr;</a>' +
+    buildSection("Order this", chain.order, "order") +
+    buildSection("Say this / modify", chain.modify, "modify") +
+    buildSection("Skip this", chain.avoid, "avoid");
+
+  detailView.querySelector(".back").addEventListener("click", showList);
+  listView.classList.add("hidden");
+  detailView.classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function showList(){
+  detailView.classList.remove("active");
+  listView.classList.remove("hidden");
+}
+
+searchInput.addEventListener("input", function(e){ renderList(e.target.value); });
+renderList();
+</script>
+</body>
+</html>
